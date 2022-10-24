@@ -1,9 +1,35 @@
 from django.shortcuts import render
 from django.http import HttpRequest, JsonResponse, HttpResponse
+from .models import Product
 
-# Create your views here.
+
+def convert_to_json(product: Product) -> dict:
+    json_product = {}
+
+    json_product['id']         = product.id
+    json_product['name']       = product.name
+    json_product['company']    = product.company
+    json_product['color']      = product.color
+    json_product['RAM']        = product.RAM
+    json_product['memory']     = product.memory
+    json_product['price']      = product.price
+    json_product['created_at'] = product.created_at
+    json_product['updated_at'] = product.updated_at
+    json_product['img_url']    = product.img_url
+
+    return json_product
+
 def get_products(request: HttpRequest):
-    pass
+    if request.method == 'GET':
+        products = Product.objects.all()
+        json_products = {'products': []}
+        if products:
+            for product in products:
+                json_products['products'].append(convert_to_json(product))
+        else:
+            json_products['products'] = []
+        
+        return JsonResponse(json_products)
 
 def get_product_by_id(request: HttpRequest):
     pass
