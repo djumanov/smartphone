@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Product
 
-# Register your models here.
+db_tables = [Product]
+
+admin.site.register(model_or_iterable=db_tables)
