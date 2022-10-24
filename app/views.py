@@ -19,6 +19,7 @@ def convert_to_json(product: Product) -> dict:
 
     return json_product
 
+
 def get_products(request: HttpRequest):
     if request.method == 'GET':
         products = Product.objects.all()
@@ -31,8 +32,10 @@ def get_products(request: HttpRequest):
         
         return JsonResponse(json_products)
 
+
 def get_product_by_id(request: HttpRequest):
     pass
+
 
 def get_companies(request: HttpRequest):
     pass
@@ -53,7 +56,22 @@ def get_products_by_ram(request: HttpRequest):
     pass
 
 def add_product(request: HttpRequest):
-    pass
+    if request.method == 'POST':
+        prodoct = Product()
+        data    = request.POST
+
+        prodoct.name    = data.get('name')
+        prodoct.company = data.get('company')
+        prodoct.color   = data.get('color')
+        prodoct.RAM     = data.get('RAM')
+        prodoct.memory  = data.get('memory')
+        prodoct.price   = data.get('price')
+        prodoct.img_url = data.get('img_url')
+
+        prodoct.save()
+
+        json_product = {'product': [convert_to_json(prodoct)]}
+        return JsonResponse(json_product)
 
 def add_products(request: HttpRequest):
     pass
